@@ -14,9 +14,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework_nested import routers
+
+from posts.views import PostViewSet, CommentViewSet, LikeView
+
+# основной роутер для постов
+router = routers.DefaultRouter()
+router.register(r'posts', PostViewSet, basename='posts')
+
+# nested router для комментариев (comments внутри posts)
+posts_router = routers.NestedDefaultRouter(router, r'posts', lookup='post')
+posts_router.register(r'comments', CommentViewSet, basename='post-comments')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', include(router.urls)),
+    path('', include(posts_router.urls)),    
+    path('posts/<int:post_id>/likes/', LikeView.as_view(), name='post-likes'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
