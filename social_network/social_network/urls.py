@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_nested import routers
+from rest_framework.authtoken.views import obtain_auth_token
 
 from posts.views import PostViewSet, CommentViewSet, LikeView
 
@@ -37,4 +38,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(posts_router.urls)),    
     path('posts/<int:post_id>/likes/', LikeView.as_view(), name='post-likes'),
+    path('api-token-auth/', obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
