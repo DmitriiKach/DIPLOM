@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -7,7 +8,9 @@ from rest_framework.viewsets import ModelViewSet
 
 
 from .models import Post, Comment, Like
-from .serializers import PostSerializer, CommentPostSerializer, ImagePostSerializer
+from .serializers import (
+    PostSerializer, CommentPostSerializer, ImagePostSerializer
+    )
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -51,7 +54,8 @@ class CommentViewSet(ModelViewSet):
         )
 
     def perform_create(self, serializer):
-        serializer.save(post_id=self.kwargs["post_pk"], author=self.request.user)
+        serializer.save(post_id=self.kwargs["post_pk"],
+                        author=self.request.user)
 
     def get_permissions(self):
         """Получение прав"""
@@ -73,14 +77,20 @@ class LikeView(APIView):
 
     def post(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
-        likes, created = Like.objects.get_or_create(post=post, author=request.user)
+        likes, created = Like.objects.get_or_create(
+            post=post, author=request.user
+            )
         if created:
-            return Response({'detail': 'liked'}, status=status.HTTP_201_CREATED)
-        return Response({'detail': 'already liked'}, status=status.HTTP_200_OK)
+            return Response({"detail": "liked"},
+                            status=status.HTTP_201_CREATED)
+        return Response({"detail": "already liked"}, status=status.HTTP_200_OK)
 
     def delete(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
-        deleted, _ = Like.objects.filter(post=post, author=request.user).delete()
+        deleted, _ = Like.objects.filter(
+            post=post, author=request.user).delete()
         if deleted:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({'detail': 'not liked'},status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"detail": "not liked"}, status=status.HTTP_404_NOT_FOUND
+            )

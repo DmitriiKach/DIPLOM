@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class Post(models.Model):
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,15 +17,21 @@ class Post(models.Model):
 
 # для доп. задания
 class PostImage(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
+
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="images"
+        )
     image = models.ImageField(upload_to="photos")
 
 
 class Like(models.Model):
+
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="likes"
     )  # Позволяет по .likes обращаться к связанным объектам
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="likes"
+        )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -38,6 +45,7 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
+    
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="comments"
     )  # Позволяет по .comments обращаться к связанным объектам

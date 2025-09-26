@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
 from rest_framework_nested import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -26,17 +27,16 @@ from posts.views import PostViewSet, CommentViewSet, LikeView
 
 # основной роутер для постов
 router = routers.DefaultRouter()
-router.register(r'posts', PostViewSet, basename='posts')
+router.register(r"posts", PostViewSet, basename="posts")
 
 # nested router для комментариев (comments внутри posts)
-posts_router = routers.NestedDefaultRouter(router, r'posts', lookup='post')
-posts_router.register(r'comments', CommentViewSet, basename='post-comments')
-
+posts_router = routers.NestedDefaultRouter(router, r"posts", lookup="post")
+posts_router.register(r"comments", CommentViewSet, basename="post-comments")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('', include(posts_router.urls)),    
-    path('posts/<int:post_id>/likes/', LikeView.as_view(), name='post-likes'),
-    path('api-token-auth/', obtain_auth_token),
+    path("admin/", admin.site.urls),
+    path("", include(router.urls)),
+    path("", include(posts_router.urls)),
+    path("posts/<int:post_id>/likes/", LikeView.as_view(), name="post-likes"),
+    path("api-token-auth/", obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
