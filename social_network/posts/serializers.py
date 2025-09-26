@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'text', 'images', 'created_at', 'comments')
 
-    def representation(self, post):
-        representation = super().to_representation(post)
-        representation['likes_count'] = post.likes.count()
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['likes_count'] = instance.likes.count()
         return representation
