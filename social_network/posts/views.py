@@ -7,11 +7,11 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 
-from .models import Post, Comment, Like
-from .serializers import (
-    PostSerializer, CommentPostSerializer, ImagePostSerializer
-    )
+from .models import Comment, Like, Post
 from .permissions import IsOwnerOrReadOnly
+from .serializers import (
+    CommentPostSerializer, ImagePostSerializer, PostSerializer
+    )
 
 
 class PostViewSet(ModelViewSet):
