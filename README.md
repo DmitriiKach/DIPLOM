@@ -80,9 +80,9 @@ pip install -r requirements.txt
 1.  Создать базу данных в PostgreSQL:
 
 ``` sql
-CREATE DATABASE dj_diplom;
-CREATE USER postgres WITH PASSWORD 'DiMariya_25';
-GRANT ALL PRIVILEGES ON DATABASE dj_diplom TO postgres;
+CREATE DATABASE ***;
+CREATE USER *** WITH PASSWORD ***;
+GRANT ALL PRIVILEGES ON DATABASE *** TO ***;
 ```
 
 2.  Применить миграции:
@@ -159,11 +159,3 @@ python manage.py runserver
 
 ------------------------------------------------------------------------
 
-### 6. Медиа и статика
-
--   Загруженные файлы сохраняются в папке `media/`
--   Для работы добавить в `urls.py`:
-
-``` python
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-```
